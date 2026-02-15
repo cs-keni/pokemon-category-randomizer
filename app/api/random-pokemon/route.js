@@ -23,23 +23,32 @@ function pickRandomUnique(arr, count) {
   return shuffled.slice(0, count);
 }
 
+async function getSpeciesForMaxGeneration(maxGen) {
+  const all = [];
+  for (let g = 1; g <= maxGen; g++) {
+    const genData = await fetchJson(`${POKEAPI_BASE}/generation/${g}`);
+    const species = genData.pokemon_species || [];
+    all.push(...species);
+  }
+  return all;
+}
+
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    const generation = searchParams.get("generation");
+    const maxGeneration = searchParams.get("maxGeneration");
 
     let speciesList = [];
 
-    if (generation) {
-      const genId = parseInt(generation, 10);
-      if (isNaN(genId) || genId < 1 || genId > 9) {
+    if (maxGeneration) {
+      const maxGen = parseInt(maxGeneration, 10);
+      if (isNaN(maxGen) || maxGen < 1 || maxGen > 9) {
         return Response.json(
-          { error: "Invalid generation. Use 1–9." },
+          { error: "Invalid maxGeneration. Use 1–9." },
           { status: 400 }
         );
       }
-      const genData = await fetchJson(`${POKEAPI_BASE}/generation/${genId}`);
-      speciesList = genData.pokemon_species || [];
+      speciesList = await getSpeciesForMaxGeneration(maxGen);
     } else {
       const listData = await fetchJson(
         `${POKEAPI_BASE}/pokemon-species?limit=10000`
@@ -65,9 +74,10 @@ export async function GET(request) {
       const detail = await fetchJson(url);
       const genus = getEnglishGenus(detail);
       const name = detail.name || speciesRef.name;
+      const id = detail.id;
       if (genus && name && !seen.has(genus)) {
         seen.add(genus);
-        choices.push({ category: genus, name });
+        choices.push({ category: genus, name, id });
       }
     }
 

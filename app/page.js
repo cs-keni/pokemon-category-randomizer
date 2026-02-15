@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { GAMES } from "./games";
+
+const SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork";
 
 function capitalize(str) {
   if (!str) return "";
@@ -11,8 +14,9 @@ function capitalize(str) {
 }
 
 function ChoiceCard({ choice, revealed, onReveal }) {
-  const { category, name } = choice;
+  const { category, name, id } = choice;
   const [hovered, setHovered] = useState(false);
+  const spriteUrl = id ? `${SPRITE_BASE}/${id}.png` : null;
 
   return (
     <div
@@ -36,7 +40,16 @@ function ChoiceCard({ choice, revealed, onReveal }) {
       }}
     >
       {revealed ? (
-        <div style={{ fontSize: "1.6rem" }}>{capitalize(name)}</div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
+          {spriteUrl && (
+            <img
+              src={spriteUrl}
+              alt=""
+              style={{ width: "96px", height: "96px", imageRendering: "pixelated" }}
+            />
+          )}
+          <div style={{ fontSize: "1.6rem" }}>{capitalize(name)}</div>
+        </div>
       ) : (
         <div>
           <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>The </span>
@@ -53,7 +66,7 @@ export default function Home() {
   const [revealed, setRevealed] = useState(new Set());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [generation, setGeneration] = useState("");
+  const [game, setGame] = useState("");
 
   async function handleGenerate() {
     setLoading(true);
@@ -62,8 +75,8 @@ export default function Home() {
     setRevealed(new Set());
 
     try {
-      const url = generation
-        ? `/api/random-pokemon?generation=${encodeURIComponent(generation)}`
+      const url = game
+        ? `/api/random-pokemon?maxGeneration=${encodeURIComponent(game)}`
         : "/api/random-pokemon";
       const res = await fetch(url);
       const data = await res.json();
@@ -107,13 +120,13 @@ export default function Home() {
       </h1>
 
       <div style={{ marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <label htmlFor="gen" style={{ fontSize: "0.9rem", color: "#aaa" }}>
-          Generation:
+        <label htmlFor="game" style={{ fontSize: "0.9rem", color: "#aaa" }}>
+          Game:
         </label>
         <select
-          id="gen"
-          value={generation}
-          onChange={(e) => setGeneration(e.target.value)}
+          id="game"
+          value={game}
+          onChange={(e) => setGame(e.target.value)}
           disabled={loading}
           style={{
             padding: "0.5rem 1rem",
@@ -122,12 +135,13 @@ export default function Home() {
             background: "rgba(0,0,0,0.2)",
             color: "#eee",
             fontSize: "0.95rem",
+            minWidth: "220px",
           }}
         >
-          <option value="">All</option>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-            <option key={n} value={n}>
-              Gen {n}
+          <option value="">All Pokémon</option>
+          {GAMES.map((g) => (
+            <option key={g.label} value={String(g.maxGen)}>
+              {g.label}
             </option>
           ))}
         </select>

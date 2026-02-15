@@ -51,16 +51,16 @@ Returns 3 random Pokémon categories (genus only, no names).
 
 **Optional query param:**
 
-- `generation` – Filter by generation (1–9). Example: `/api/random-pokemon?generation=1`
+- `maxGeneration` – Include Pokémon from Gen 1 through N (1–9). Example: `/api/random-pokemon?maxGeneration=5` for Black/White pool.
 
 **Response:**
 
 ```json
 {
   "choices": [
-    { "category": "Sea Weasel", "name": "buizel" },
-    { "category": "Sky High", "name": "rayquaza" },
-    { "category": "Starling", "name": "starly" }
+    { "category": "Sea Weasel", "name": "buizel", "id": 418 },
+    { "category": "Sky High", "name": "rayquaza", "id": 384 },
+    { "category": "Starling", "name": "starly", "id": 396 }
   ]
 }
 ```
