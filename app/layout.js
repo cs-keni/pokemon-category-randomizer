@@ -1,3 +1,5 @@
+import "./globals.css";
+
 export const metadata = {
   title: "Nuzlocke Randomizer",
   description: "Randomly generate 3 Pokémon categories for your Nuzlocke run",
