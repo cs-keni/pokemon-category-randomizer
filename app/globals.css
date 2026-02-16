@@ -40,3 +40,55 @@
     transform: rotate(360deg);
   }
 }
+
+/* Phase 2: Grass & Parallax */
+@keyframes grassSway {
+  0%, 100% {
+    transform: translateX(0) skewX(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: translateX(2px) skewX(-0.5deg);
+  }
+  50% {
+    transform: translateX(-1px) skewX(0.5deg);
+  }
+  75% {
+    transform: translateX(1px) skewX(-0.3deg);
+  }
+}
+
+@keyframes grassRustle {
+  0%, 100% {
+    transform: translateX(-3px) skewX(-1deg);
+  }
+  20% {
+    transform: translateX(4px) skewX(1.5deg);
+  }
+  40% {
+    transform: translateX(-2px) skewX(-0.8deg);
+  }
+  60% {
+    transform: translateX(3px) skewX(1.2deg);
+  }
+  80% {
+    transform: translateX(-1px) skewX(-0.5deg);
+  }
+}
+
+@keyframes cloudDrift {
+  0% {
+    background-position: 0px 20px;
+  }
+  100% {
+    background-position: -800px 20px;
+  }
+}
+
+.grass-layer {
+  animation: grassSway 4s ease-in-out infinite;
+}
+
+.grass-layer.grass-rustle {
+  animation: grassRustle 0.8s ease-in-out infinite;
+}

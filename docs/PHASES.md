@@ -86,13 +86,13 @@ Before Phase 1, the app has:
 
 ---
 
-## Phase 2: Atmosphere — Grass & Parallax
+## Phase 2: Atmosphere — Grass & Parallax ✅
 
 **Goal:** Add grass, clouds, and layered background for atmosphere. Still single page.
 
 ### 2.1 Grass tiles / patches
 
-- [ ] **What:** Pixel-art tall grass patches (like Pokémon games) in the background.
+- [x] **What:** Pixel-art tall grass patches (like Pokémon games) in the background.
 - [ ] **How:**
   - Use a small repeating grass tile image (e.g. 16x16 or 32x32). Source: create one, or use CC0 assets.
   - Place as a layer at the bottom of the viewport, possibly repeating via `background-repeat`.
@@ -102,7 +102,7 @@ Before Phase 1, the app has:
 
 ### 2.2 Grass rustle on hover
 
-- [ ] **What:** When hovering near a choice card, nearby grass rustles more.
+- [x] **What:** When hovering near a choice card, nearby grass rustles more.
 - [ ] **How:**
   - Track mouse position or card hover state.
   - If cursor is within X pixels of a card, increase the grass animation intensity (stronger sway, shorter cycle).
@@ -110,7 +110,7 @@ Before Phase 1, the app has:
 
 ### 2.3 Parallax layers (clouds, mountains)
 
-- [ ] **What:** Background layers that move at different speeds on scroll (or as fixed layers with different `background-position`).
+- [x] **What:** Background layers that move at different speeds on scroll (or as fixed layers with different `background-position`).
 - [ ] **How:**
   - Create 2–3 layers: far mountains (slow), clouds (medium), closer elements (faster).
   - Use `background-attachment: fixed` and different `background-position` values, or `position: fixed` with different `transform: translate` on scroll.
@@ -118,7 +118,7 @@ Before Phase 1, the app has:
 
 ### 2.4 Day / night cycle (optional)
 
-- [ ] **What:** Toggle or auto cycle between day and night ambience.
+- [x] **What:** Toggle or auto cycle between day and night ambience.
 - [ ] **How:**
   - Day: brighter background, warmer tones.
   - Night: darker, blue tint, optionally stars (small dots or a starfield image).
@@ -426,4 +426,4 @@ Before Phase 1, the app has:
 3. Phases 1–3 can often be done in parallel; 4–6 build on 3; 7–8 can be done anytime.
 4. The **core randomizer** (`app/page.js`, `app/api/random-pokemon/route.js`) should not be broken by any phase. If a change risks it, do it in a branch or document the rollback.
 
-**Last updated:** 2025-02-15 — Phase 1 completed.
+**Last updated:** 2025-02-15 — Phase 2 completed.

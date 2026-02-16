@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GAMES } from "./games";
 import Background from "./components/Background";
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -135,6 +135,18 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [game, setGame] = useState("");
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [cardHovered, setCardHovered] = useState(false);
+  const [theme, setTheme] = useState("auto");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("nuzlocke-theme");
+    if (stored && ["day", "night", "auto"].includes(stored)) setTheme(stored);
+  }, []);
+
+  function setThemeAndStore(value) {
+    setTheme(value);
+    localStorage.setItem("nuzlocke-theme", value);
+  }
 
   async function handleGenerate() {
     setLoading(true);
@@ -164,7 +176,7 @@ export default function Home() {
 
   return (
     <>
-      <Background />
+      <Background cardHovered={cardHovered} theme={theme} />
       <main
         style={{
           minHeight: "100vh",
@@ -179,6 +191,27 @@ export default function Home() {
           zIndex: 1,
         }}
       >
+        <div style={{ position: "absolute", top: "1.5rem", right: "2rem", display: "flex", gap: "0.25rem" }}>
+          {["day", "auto", "night"].map((t) => (
+            <button
+              key={t}
+              onClick={() => setThemeAndStore(t)}
+              title={t === "day" ? "Day" : t === "night" ? "Night" : "Auto (by time)"}
+              style={{
+                padding: "0.4rem 0.6rem",
+                borderRadius: "8px",
+                border: "1px solid rgba(255,255,255,0.2)",
+                background: theme === t ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.2)",
+                color: "#eee",
+                cursor: "pointer",
+                fontSize: "1.1rem",
+              }}
+            >
+              {t === "day" ? "☀️" : t === "night" ? "🌙" : "🌓"}
+            </button>
+          ))}
+        </div>
+
         <h1
           style={{
             fontSize: "2.5rem",
@@ -268,6 +301,8 @@ export default function Home() {
 
         {choices && choices.length > 0 && (
           <div
+            onMouseEnter={() => setCardHovered(true)}
+            onMouseLeave={() => setCardHovered(false)}
             style={{
               display: "flex",
               flexWrap: "wrap",
